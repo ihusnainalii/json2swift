@@ -9,37 +9,16 @@
 struct SampleDTO: Codable {
 
     // MARK: - Data Member
-    let acronym: String?
     let glossary: Glossary?
-    let id: Int?
-    let glossDef: GlossDef?
-    let sortAs: Bool?
-    let abbrev: Double?
-    let glossTerm: String?
-    let glosssee: String?
 
     // MARK: - Coding Key
     enum CodingKeys: String, CodingKey {
-       case acronym = "acronym"
        case glossary = "glossary"
-       case id = "id"
-       case glossDef = "gloss_def"
-       case sortAs = "sort_as"
-       case abbrev = "abbrev"
-       case glossTerm = "gloss_term"
-       case glosssee = "GlossSee"
     }
 
     // MARK: - Stuct Initializer
     init() {
-        self.acronym = ""
         self.glossary = Glossary()
-        self.id = 0
-        self.glossDef = GlossDef()
-        self.sortAs = false
-        self.abbrev = 0
-        self.glossTerm = ""
-        self.glosssee = ""
     }
 
     // MARK: - Decoding
@@ -48,14 +27,7 @@ struct SampleDTO: Codable {
     /// - Throws: This initializer throws an error if reading from the decoder fails, or if the data read is corrupted or otherwise invalid.
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        acronym = try values.decodeIfPresent(String.self, forKey: .acronym)
         glossary = try values.decodeIfPresent(Glossary.self, forKey: .glossary)
-        id = try values.decodeIfPresent(Int.self, forKey: .id)
-        glossDef = try values.decodeIfPresent(GlossDef.self, forKey: .glossDef)
-        sortAs = try values.decodeIfPresent(Bool.self, forKey: .sortAs)
-        abbrev = try values.decodeIfPresent(Double.self, forKey: .abbrev)
-        glossTerm = try values.decodeIfPresent(String.self, forKey: .glossTerm)
-        glosssee = try values.decodeIfPresent(String.self, forKey: .glosssee)
     }
 }
 
@@ -63,15 +35,18 @@ struct SampleDTO: Codable {
 struct Glossary: Codable {
 
     // MARK: - Data Member
+    let glossdiv: Glossdiv?
     let title: String?
 
     // MARK: - Coding Key
     enum CodingKeys: String, CodingKey {
+       case glossdiv = "GlossDiv"
        case title = "title"
     }
 
     // MARK: - Stuct Initializer
     init() {
+        self.glossdiv = Glossdiv()
         self.title = ""
     }
 
@@ -81,27 +56,28 @@ struct Glossary: Codable {
     /// - Throws: This initializer throws an error if reading from the decoder fails, or if the data read is corrupted or otherwise invalid.
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
+        glossdiv = try values.decodeIfPresent(Glossdiv.self, forKey: .glossdiv)
         title = try values.decodeIfPresent(String.self, forKey: .title)
     }
 }
 
-/// DTO for GlossDef, containes Data Member, Coding Key and Decoding for JSON
-struct GlossDef: Codable {
+/// DTO for Glossdiv, containes Data Member, Coding Key and Decoding for JSON
+struct Glossdiv: Codable {
 
     // MARK: - Data Member
-    let glossSeeAlso: [String]?
-    let para: String?
+    let title: String?
+    let glosslist: Glosslist?
 
     // MARK: - Coding Key
     enum CodingKeys: String, CodingKey {
-       case glossSeeAlso = "gloss_see_also"
-       case para = "para"
+       case title = "title"
+       case glosslist = "GlossList"
     }
 
     // MARK: - Stuct Initializer
     init() {
-        self.glossSeeAlso = []
-        self.para = ""
+        self.title = ""
+        self.glosslist = Glosslist()
     }
 
     // MARK: - Decoding
@@ -110,7 +86,113 @@ struct GlossDef: Codable {
     /// - Throws: This initializer throws an error if reading from the decoder fails, or if the data read is corrupted or otherwise invalid.
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        glossSeeAlso = try values.decodeIfPresent([String].self, forKey: .glossSeeAlso)
+        title = try values.decodeIfPresent(String.self, forKey: .title)
+        glosslist = try values.decodeIfPresent(Glosslist.self, forKey: .glosslist)
+    }
+}
+
+/// DTO for Glosslist, containes Data Member, Coding Key and Decoding for JSON
+struct Glosslist: Codable {
+
+    // MARK: - Data Member
+    let glossentry: Glossentry?
+
+    // MARK: - Coding Key
+    enum CodingKeys: String, CodingKey {
+       case glossentry = "GlossEntry"
+    }
+
+    // MARK: - Stuct Initializer
+    init() {
+        self.glossentry = Glossentry()
+    }
+
+    // MARK: - Decoding
+    /// Creates a new instance by decoding from the given decoder.
+    /// - Parameter decoder: the decoder to read data from.
+    /// - Throws: This initializer throws an error if reading from the decoder fails, or if the data read is corrupted or otherwise invalid.
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        glossentry = try values.decodeIfPresent(Glossentry.self, forKey: .glossentry)
+    }
+}
+
+/// DTO for Glossentry, containes Data Member, Coding Key and Decoding for JSON
+struct Glossentry: Codable {
+
+    // MARK: - Data Member
+    let sortas: String?
+    let glossterm: String?
+    let abbrev: String?
+    let id: String?
+    let glosssee: String?
+    let acronym: String?
+    let glossdef: Glossdef?
+
+    // MARK: - Coding Key
+    enum CodingKeys: String, CodingKey {
+       case sortas = "SortAs"
+       case glossterm = "GlossTerm"
+       case abbrev = "Abbrev"
+       case id = "ID"
+       case glosssee = "GlossSee"
+       case acronym = "Acronym"
+       case glossdef = "GlossDef"
+    }
+
+    // MARK: - Stuct Initializer
+    init() {
+        self.sortas = ""
+        self.glossterm = ""
+        self.abbrev = ""
+        self.id = ""
+        self.glosssee = ""
+        self.acronym = ""
+        self.glossdef = Glossdef()
+    }
+
+    // MARK: - Decoding
+    /// Creates a new instance by decoding from the given decoder.
+    /// - Parameter decoder: the decoder to read data from.
+    /// - Throws: This initializer throws an error if reading from the decoder fails, or if the data read is corrupted or otherwise invalid.
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        sortas = try values.decodeIfPresent(String.self, forKey: .sortas)
+        glossterm = try values.decodeIfPresent(String.self, forKey: .glossterm)
+        abbrev = try values.decodeIfPresent(String.self, forKey: .abbrev)
+        id = try values.decodeIfPresent(String.self, forKey: .id)
+        glosssee = try values.decodeIfPresent(String.self, forKey: .glosssee)
+        acronym = try values.decodeIfPresent(String.self, forKey: .acronym)
+        glossdef = try values.decodeIfPresent(Glossdef.self, forKey: .glossdef)
+    }
+}
+
+/// DTO for Glossdef, containes Data Member, Coding Key and Decoding for JSON
+struct Glossdef: Codable {
+
+    // MARK: - Data Member
+    let para: String?
+    let glossseealso: [String]?
+
+    // MARK: - Coding Key
+    enum CodingKeys: String, CodingKey {
+       case para = "para"
+       case glossseealso = "GlossSeeAlso"
+    }
+
+    // MARK: - Stuct Initializer
+    init() {
+        self.para = ""
+        self.glossseealso = []
+    }
+
+    // MARK: - Decoding
+    /// Creates a new instance by decoding from the given decoder.
+    /// - Parameter decoder: the decoder to read data from.
+    /// - Throws: This initializer throws an error if reading from the decoder fails, or if the data read is corrupted or otherwise invalid.
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
         para = try values.decodeIfPresent(String.self, forKey: .para)
+        glossseealso = try values.decodeIfPresent([String].self, forKey: .glossseealso)
     }
 }
